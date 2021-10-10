@@ -1,0 +1,8 @@
+.AddressBook {
+    text-align: center;
+}
+
+.AddressBook-HEAD {
+    height: 40vmin;
+    pointer-events: none;
+}
