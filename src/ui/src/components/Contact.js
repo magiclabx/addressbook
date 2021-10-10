@@ -1,9 +1,6 @@
-import Reat, {Component} from 'React';
-import Avatar from "./Avatar";
+import React, {Component} from 'react';
 
-
-
-class Contact extends Compoent {
+class Contact extends Component {
 
     state = {
         firstName,
@@ -14,7 +11,7 @@ class Contact extends Compoent {
 
     render (){
         return(
-            <div key={} className="contact">
+            <div className="contact">
                 <div>First name: {this.state.firstName}</div>
                 <div>First name: {this.state.lastName}</div>
                 <div>First name: {this.state.homePhone}</div>

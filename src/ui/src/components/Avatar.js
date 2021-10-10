@@ -1,6 +1,4 @@
 import React, {Component} from "react";
-import AddressBook from "./AddressBook";
-
 
 class Avatar extends Component {
 
