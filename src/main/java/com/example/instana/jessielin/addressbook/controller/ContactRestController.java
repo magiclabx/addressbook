@@ -9,17 +9,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/contacts")
+@CrossOrigin("*")
 public class ContactRestController {
 
     private ContactService contactService = new ContactService();
 
-    @GetMapping(path = "/contacts")
+    @GetMapping
     public ResponseEntity<?> getAllContacts(){
         return ResponseEntity.ok(contactService.getAllContacts());
     }
 
-    @PostMapping(path = "/contacts/add")
+    @PostMapping(path = "/add")
     public ResponseEntity<?> saveUser(@RequestBody Contact contact) {
         List<Contact> resource = contactService.addContact(contact);
         return ResponseEntity.ok(resource);
