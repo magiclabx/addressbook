@@ -9,8 +9,9 @@ import java.util.List;
 
 @Repository
 @EnableMongoRepositories
-public interface ContactMangoRepository extends MongoRepository<Contact, String> , ContactCustomizedRepository {
+public interface ContactRepository extends MongoRepository<Contact, String> , ContactCustomizedRepository {
         Contact findByFirstName(String firstName);
         List<Contact> findAll();
+        Contact save(Contact contact);
 }
 

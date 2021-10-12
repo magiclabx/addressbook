@@ -1,6 +1,7 @@
-package com.example.instana.jessielin.addressbook.controllers;
+package com.example.instana.jessielin.addressbook.controller;
 
-import com.example.instana.jessielin.addressbook.services.ContactService;
+import com.example.instana.jessielin.addressbook.entity.Contact;
+import com.example.instana.jessielin.addressbook.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/contacts")
-@CrossOrigin("*")
 public class ContactController {
 
-    //@Autowired
-    private ContactService contactService = new ContactService();
+    @Autowired
+    private ContactService contactService;
 
     @GetMapping
     public String getAllContacts(Model model){
+        contactService.addContact(new Contact("yy"));
         model.addAttribute("contacts", contactService.getAllContacts());
         return "contacts";
     }

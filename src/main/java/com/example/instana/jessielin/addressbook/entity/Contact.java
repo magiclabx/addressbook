@@ -1,13 +1,21 @@
-package com.example.instana.jessielin.addressbook.entities;
+package com.example.instana.jessielin.addressbook.entity;
 
 import com.sun.istack.NotNull;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import com.sun.xml.bind.v2.model.core.ID;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.yaml.snakeyaml.events.Event;
 
-@Document(collection = "contacts")
+import javax.persistence.*;
+
+@Entity
+@Table(name = "CONTACTS")
 public class Contact {
+
+    @Transient
+    private static final String SEQUENCE_NAME = "user_sequence";
+
     @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private String id;
 
     @NotNull
@@ -28,6 +36,18 @@ public class Contact {
     public Contact(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public Contact() {
+
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getFirstName() {
@@ -78,9 +98,12 @@ public class Contact {
         this.address = address;
     }
 
+
+
     @Override
     public String toString() {
         return "Contact{" +
+                ", id='" + id + '\''  +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", homePhone='" + homePhone + '\'' +

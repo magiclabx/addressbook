@@ -1,13 +1,12 @@
 package com.example.instana.jessielin.addressbook.repository;
 
 import com.example.instana.jessielin.addressbook.entity.Contact;
-import org.springframework.data.jpa.repository.Query;
+import com.mongodb.client.result.DeleteResult;
 
 import java.util.List;
 
-public interface ContactCustumizedRepository {
-    @Query("select c from Contact c Order by c.lastName, c.firstName ASC")
+public interface ContactCustomizedRepository {
     List<Contact> findAllSortByName();
-    @Query("select c from Contact c where c.firstName = ?1 or c.lastName = ?2")
-    List<Contact> searchByFirstOrLastName(String firstName, String lastName);
+    List<Contact> searchByFirstOrLastName(String name);
+    long deleteContactById(Contact contact);
 }

@@ -4,8 +4,6 @@ import './index.css';
 import AddressBook from './AddressBook';
 
 ReactDOM.render(
-    <React.StrictMode>
-        <AddressBook />
-    </React.StrictMode>,
+    <AddressBook />,
     document.getElementById('root')
 );

@@ -1,8 +1,47 @@
 .AddressBook {
-    text-align: center;
+    margin: 2px;
 }
 
 .AddressBook-HEAD {
     height: 40vmin;
     pointer-events: none;
+}
+
+.AddressBook container{
+    text-align: center;
+}
+
+.AddressBook form div#editInput{
+    width: 15px;
+    height: 50px;
+    position: absolute;
+}
+.AddressBook .listArea{
+    overflow:scroll;
+    height:400px;
+    width:200px;
+    border: 2px solid;
+    border-radius: 5px;
+    margin-inline: 3px;
+}
+.AddressBook .selectedInfo{
+    width:200px;
+}
+.AddressBook .header{
+    rowlapse: 3;
+    border-bottom: 1px ;
+    text-align: center;
+}
+.count {
+    width: 112px;
+    height: 47px;
+    border-bottom: 0px solid black;
+    position: relative;
+}
+.AddressBook table{
+    height:400px;
+    border: 1px solid;
+    border-radius: 5px;
+    margin-inline: 3px;
+    position: relative;
 }
