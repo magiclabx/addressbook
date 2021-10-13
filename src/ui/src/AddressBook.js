@@ -2,8 +2,7 @@ import React, { Component} from 'react';
 import './AddressBook.css';
 import Contact  from './components/Contact'
 import axios from "axios";
-import Avatar from "./components/Avatar";
-import FileBase64 from "react-file-base64";
+import ContactEditForm from "./components/ContactEditForm";
 
 class AddressBook extends Component {
 
@@ -21,27 +20,16 @@ class AddressBook extends Component {
                 address:"",
                 avatar: null
             },
+            avatar: null,
             contacts: [],
             numberOfContacts: 0,
-            editing: false
+            editing: false,
+            editingAt: null,
+            viewing: false
         }
-
         this.getAllContacts();
-        this.submitAvatar = this.submitAvatar.bind(this);
         this.loadImageBase64 = this.loadImageBase64.bind(this);
     }
-
-  emptyContact = {
-        id: null,
-        firstName: "",
-        lastName: "",
-        homePhone: "",
-        mobilePhone: "",
-        officePhone: "",
-        address:"",
-        avatar: null
-    }
-
     getAllContacts = () => {
         axios.get("http://localhost:8080/api/contacts").then( res => {
            console.log("allContacts()");
@@ -52,87 +40,25 @@ class AddressBook extends Component {
     handleDelete = (e) => {
         e.preventDefault();
         axios.delete("http://localhost:8080/api/contacts/" + this.state.selected.id).then( res => {
-            this.setState({ selected: null, contacts: res.data, numberOfContacts: res.data.length})
+            let sel = (res.data.length >0) ? res.data.at(res.data.length -1): null;
+            this.setState({ selected: sel , contacts: res.data, numberOfContacts: res.data.length})
         });
     }
 
-    handleEdit = (e) => {
-        e.preventDefault();
-        this.setState({ contact: this.state.selected, editing: true});
-    }
-
-    onChangeForm = (e) => {
-        let co = this.state.contact;
-        if (e.target.name === 'firstName') {
-              co.firstName = e.target.value;
-            } else if (e.target.name === 'lastName') {
-              co.lastName = e.target.value;
-            } else if (e.target.name === 'homePhone') {
-              co.homePhone = e.target.value;
-            }else if (e.target.name === 'mobilePhone') {
-              co.mobilePhone = e.target.value;
-            }else if (e.target.name === 'officePhone') {
-              co.officePhone = e.target.value;
-            }else if (e.target.name === 'address') {
-              co.address = e.target.value;
-            }
-            this.setState({contact: co});
-        }
-
-    handleReset = (e) =>{
-        this.setState({ selected: null, contact: this.emptyContact, editing: false});
-    }
-
-    submitAvatar = (id) =>{
-        let data = new FormData();
-        data.append('file', this.state.tmpImagFile, id);
-        console.log(this.state.tmpImagFile);
-        axios.post("http://localhost:8080/api/contacts/contact/" + id + "/avatar", data,{
-            headers: {
-                'Accept': 'application/json',
-                'Accept-Language': 'en-US,en;q=0.8',
-                'Content-Type': 'multipart/form-data',
-                'Access-Control-Allow-Origin': "*"
-            }
-        }).then((response) => {
-            //handle success
-            this.setState({ tmpImagFile: null});
-        }).catch((error) => {
-            //handle error
-        });
-    }
-
-    handleSubmit = (e) => {
-        e.preventDefault();
-        if(!this.state.editing){
-          axios.post("http://localhost:8080/api/contacts/contact", this.state.contact)
-              .then(res => {
-                  let list = this.state.contacts;
-                  list.push(res.data);
-                  console.log(res.data);
-                  this.setState({contact: this.emptyContact, contacts:list , numberOfContacts: list.length});
-                  if( this.state.tmpImagFile){
-                      this.submitAvatar(res.data.id);
-                  }
-              });
-        }else{
-          axios.patch("http://localhost:8080/api/contacts/contact", this.state.contact)
-              .then(res => this.setState({contact: this.emptyContact, contacts:res.data, editing: false }));
-        }
+    handleAddContact = ( contact ) => {
+        let list = this.state.contacts;
+        list.push(contact);
+        this.setState({contacts:list , numberOfContacts: list.length});
     }
 
     selectedContact = (val) => {
         if(val !== undefined || val !== null ) {
             this.setState({selected: val});
+            console.log(val);
             this.loadImageBase64( val.id, (reader) => {
                 this.setState({avatar: reader.result});
             });
         }
-    }
-
-    uploadedAvatar = (file) => {
-        console.log(file);
-        this.setState({ tmpImagFile: file});
     }
 
     loadImageBase64 = (id, callback) => {
@@ -156,23 +82,36 @@ class AddressBook extends Component {
 
     }
 
+    handleAdd = (e) =>{
+        e.preventDefault();
+        this.setState( {  selected: null,  editingAt: null, viewing: false});
+    }
+    handleEdit = (e) =>{
+        e.preventDefault();
+        this.setState( {  editingAt: this.state.selected, selected : null});
+    }
+    setViewing = (c) =>{
+        if(c){
+            this.getAllContacts();
+            this.setState( { editingAt: null, selected: c });
+        }else{
+            this.setState( {  editingAt: null, selected: this.state.editingAt, viewing: true });
+        }
+    }
+
   render() {
-      let contactList = () => {
-         return this.state.contacts.map((c, index) => <div><Contact id={c.id} contact={c} setSelected={this.selectedContact} isListItem={true}> </Contact></div>);
-      };
-
-      let contactInfo = () => {
-          return  (this.state.selected !== null)?<div>
-              <Contact contact={this.state.selected}></Contact>
-              <button onClick={this.handleEdit}>Edit</button>
-              <button onClick={this.handleDelete}>Delete</button></div>: <div>Noting selected</div> ;
-      };
-
-      let addeditButton;
-      if(this.state.editing) {
-          addeditButton =  <button onClick={this.handleSubmit}>Edit</button>;
-      } else {
-          addeditButton =  <button onClick={this.handleSubmit}>Add</button>;
+      let contactsList = () => {
+            return this.state.contacts.map((c, index) =>
+                <div><Contact id={c.id} contact={c} setSelected={this.selectedContact} isListItem={true}> </Contact></div>);
+      }
+      let editContactOrView = () => {
+          return (this.state.selected == null ) ?
+              <ContactEditForm conatctToEdit={this.state.editingAt} appenedNewContact={this.handleAddContact} avatar={this.state.avatar} setFinished={this.setViewing}></ContactEditForm>
+          : <div className="viewArea">
+                  <Contact contact={this.state.selected} ></Contact>
+                  <button onClick={this.handleAdd}>Add</button>
+                  <button onClick={this.handleEdit}>Edit</button>
+                  <button onClick={this.handleDelete}>Delete</button></div>;
       }
     return (
       <div className="AddressBook">
@@ -183,31 +122,11 @@ class AddressBook extends Component {
                   <tr className="header">Contacts</tr>
                   <tr>
                       <td>
-                          <form onSubmit={this.handleSubmit} className="editForm" >
-                              <Avatar imageBase64={this.state.avatar} setImageFile={this.uploadedAvatar}></Avatar>
-                              <div>First Name <input name={"firstName"} type={"text"} value={this.state.contact.firstName} onChange={this.onChangeForm}
-                                                     required className={this.state.inputclass} /></div>
-                              <div>Last Name <input name={"lastName"} type={"text"} value={this.state.contact.lastName} onChange={this.onChangeForm}
-                                                     className={this.state.inputclass} /></div>
-                              <div>Phone numbers</div>
-                              <div>Home <input name={"homePhone"} type={"text"} value={this.state.contact.homePhone} onChange={this.onChangeForm} className={this.state.inputclass} /></div>
-                              <div>Mobile <input name={"mobilePhone"} type={"text"} value={this.state.contact.mobilePhone} onChange={this.onChangeForm} className={this.state.inputclass} /></div>
-                              <div>Company <input name={"officePhone"} type={"text"} value={this.state.contact.officePhone}  onChange={this.onChangeForm} className={this.state.inputclass} />
-                              </div>
-                              <div></div>
-                              <div>Address <textarea name={"address"} type={"text"} value={this.state.contact.address} onChange={this.onChangeForm} className={this.state.clainputclassss} /></div>
-                              <button onClick={this.handleReset}>Reset</button>
-                              {addeditButton}
-                          </form>
+                          {editContactOrView()}
                        </td>
                       <td>
                           <div className="listArea">
-                            {contactList()}
-                          </div>
-                      </td>
-                      <td>
-                          <div className="selectedInfo">
-                              {contactInfo()}
+                            {contactsList()}
                           </div>
                       </td>
                   </tr>

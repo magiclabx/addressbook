@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.yaml.snakeyaml.events.Event;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "CONTACTS")
@@ -28,6 +29,33 @@ public class Contact {
     private String mobilePhone;
     private String officePhone;
     private String address;
+    private String homepage;
+    private Date birthday;
+    private String note;
+
+    public String getHomepage() {
+        return homepage;
+    }
+
+    public void setHomepage(String homepage) {
+        this.homepage = homepage;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
 
     public Contact(String firstName) {
         this.firstName = firstName;
@@ -109,7 +137,10 @@ public class Contact {
                 ", homePhone='" + homePhone + '\'' +
                 ", mobilePhone='" + mobilePhone + '\'' +
                 ", officePhone='" + officePhone + '\'' +
-                ", address=" + address +
+                ", address=" + address + '\'' +
+                ", homepage=" + homepage + '\'' +
+                ", address=" + birthday.toString()+ '\'' +
+                ", address=" + note +
                 '}';
     }
 }

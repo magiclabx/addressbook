@@ -16,6 +16,7 @@
     height: 50px;
     position: absolute;
 }
+
 .AddressBook .listArea{
     overflow:scroll;
     height:400px;
@@ -24,14 +25,21 @@
     border-radius: 5px;
     margin-inline: 3px;
 }
+
 .AddressBook .selectedInfo{
     width:200px;
 }
+
+.AddressBook td{
+    width: 220px;
+}
+
 .AddressBook .header{
     rowlapse: 3;
     border-bottom: 1px ;
     text-align: center;
 }
+
 .count {
     width: 112px;
     height: 47px;
@@ -52,4 +60,11 @@
     border: 2px solid gray;
     border-radius: 50%;
     margin-left: 50px;
+    margin-top: 10px;
+}
+
+.AddressBook .viewArea{
+    margin-top: 2px;
+    height: 430px;
+    width: 250px;
 }

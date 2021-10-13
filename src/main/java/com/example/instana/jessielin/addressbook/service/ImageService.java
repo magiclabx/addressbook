@@ -9,10 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 @Service
 public class ImageService {
-
     @Autowired
     GridFsTemplate gridFsTemplate;
 
@@ -22,13 +23,15 @@ public class ImageService {
 
     public void saveImage(String id, MultipartFile file ){
         try {
+            //remove image with same file name
+            deleteImageByContactId(id);
             gridFsTemplate.store(file.getInputStream(), id, "image/jpg");
         }catch (IOException ioe){
             ioe.printStackTrace();
         }
     }
 
-    public GridFSFile findImageByContcatId(String id){
+    public GridFSFile findImageByContactId(String id){
        return gridFsTemplate.findOne(new Query(Criteria.where("filename").is(id)));
     }
 

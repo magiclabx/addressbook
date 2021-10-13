@@ -67,6 +67,7 @@ public class ContactRestController {
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> deleteContact(@PathVariable Contact id) {
         List<Contact> result = contactService.deleteContact(id);
+        imageService.deleteImageByContactId(id.getId());
         return ResponseEntity.ok(result);
     }
 
@@ -84,7 +85,7 @@ public class ContactRestController {
 
     @RequestMapping(value = "/contact/{id}/avatar", method = RequestMethod.GET)
     public ResponseEntity<byte[]>  downloadAvatarImage(@PathVariable String id) throws IOException {
-        GridFSFile gridFsFile = imageService.findImageByContcatId(id);
+        GridFSFile gridFsFile = imageService.findImageByContactId(id);
         if (gridFsFile == null)
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 

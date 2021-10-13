@@ -63,8 +63,6 @@ class ContactServiceTest {
 
     //@Test(expectedExceptions = RuntimeException.class)
     void testAddExistsContact() {
-
-
         when(contactRepository.save(CONTACT1)).thenThrow(new RuntimeException());
         contactService.addContact(new Contact("New 1", "XXX"));
     }
@@ -85,5 +83,6 @@ class ContactServiceTest {
 
     @Test
     void deleteContact() {
+        when(contactRepository.deleteContactById(CONTACT1)).thenReturn(null);
     }
 }

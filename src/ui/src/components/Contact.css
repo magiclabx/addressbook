@@ -1,6 +1,7 @@
 contact{
     margin: 0px;
     text-decoration-line: none;
+    width:200px
 }
 
 .row {
@@ -17,3 +18,9 @@ li:nth-child(odd) {
     border-bottom: 1px solid black;
     position: absolute;
 }
+
+contact.imageArea{
+    margin-top: 2px;
+    margin-bottom: 50px;
+}
+

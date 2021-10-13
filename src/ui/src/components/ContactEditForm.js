@@ -1,7 +1,6 @@
 import React, {Component} from "react";
-import Avatar from "./components/Avatar";
+import Avatar from "./Avatar";
 import axios from "axios";
-
 
 const url = "http://localhost:8080/api/contacts/contact";
 

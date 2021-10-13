@@ -6,8 +6,6 @@ class Contact extends Component {
 
     handleSelect = (e) => {
         e.preventDefault();
-        console.log("child call");
-        console.log(this.props.contact);
         this.props.setSelected(this.props.contact);
     }
     render (){
@@ -21,7 +19,9 @@ class Contact extends Component {
         }else{
             return (
                 <div key={co.id} className="contact" >
-                    <Avatar contactId={co.id} imageBase64={this.props.imageBase64} setImageFile={this.uploadedAvatar}></Avatar>
+                    <div className="imageArea">
+                        <Avatar contactId={co.id} imageBase64={this.props.imageBase64} setImageFile={this.uploadedAvatar} viewable="true"></Avatar>
+                    </div>
                     <div className="row">First name: {co.firstName}</div>
                     <div className="row">Last name: {co.lastName}</div>
                     <div className="row">Home: {co.homePhone}</div>
