@@ -39,10 +39,10 @@ class ContactServiceTest {
     @Test
     void testSearchContact(){
         when(contactRepository.searchByFirstOrLastName("123")).thenReturn(newArrayList(CONTACT1));
-        List<Contact> result = contactService.searchContact("123");
+        List<Contact> result = contactService.searchContacts("123");
         assertThat(result.size()).isEqualTo(1);
         when(contactRepository.searchByFirstOrLastName("456")).thenReturn(newArrayList(CONTACT2));
-        result = contactService.searchContact("456");
+        result = contactService.searchContacts("456");
         assertThat(result.size()).isEqualTo(1);
 
     }
@@ -57,8 +57,8 @@ class ContactServiceTest {
     void testAddNewContact() {
         when(contactRepository.save(CONTACT1)).thenReturn(CONTACT1);
         when(contactRepository.findAll()).thenReturn(newArrayList(CONTACT1, CONTACT2));
-        List<Contact> result = contactService.addContact(CONTACT1);
-        assertThat(result.size()).isEqualTo(2);
+        Contact result = contactService.addContact(CONTACT1);
+        assertThat(result).isEqualTo(CONTACT1);
     }
 
     //@Test(expectedExceptions = RuntimeException.class)

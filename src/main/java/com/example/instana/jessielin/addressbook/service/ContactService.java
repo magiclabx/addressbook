@@ -2,16 +2,13 @@ package com.example.instana.jessielin.addressbook.service;
 
 import com.example.instana.jessielin.addressbook.entity.Contact;
 import com.example.instana.jessielin.addressbook.repository.ContactRepository;
-import com.mongodb.Mongo;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.data.mongodb.core.aggregation.ConvertOperators.ToObjectId.toObjectId;
 
 @Service
 public class ContactService {
@@ -30,17 +27,17 @@ public class ContactService {
     }
 
     public List<Contact> getAllContacts(){
-        return contactRepository.findAll();
+        return contactRepository.findAllSortByName();
     }
 
-    public List<Contact> searchContact(String name){
+    public List<Contact> searchContacts(String name){
         List<Contact> list = contactRepository.searchByFirstOrLastName(name);
         return list;
     }
-    public List<Contact> addContact(Contact contact) {
+
+    public Contact addContact(Contact contact) {
         contact.setId(ObjectId.get().toString());
-        contactRepository.save(contact);
-        return getAllContacts();
+        return contactRepository.save(contact);
     }
 
     public Contact updateContact(Contact contact) {

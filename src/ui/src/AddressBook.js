@@ -2,44 +2,52 @@ import React, { Component} from 'react';
 import './AddressBook.css';
 import Contact  from './components/Contact'
 import axios from "axios";
+import Avatar from "./components/Avatar";
+import FileBase64 from "react-file-base64";
 
 class AddressBook extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            selected: null,
+            contact: {
+                id: null,
+                firstName: "",
+                last: "",
+                homePhone: "",
+                mobilePhone: "",
+                officePhone: "",
+                address:"",
+                avatar: null
+            },
+            contacts: [],
+            numberOfContacts: 0,
+            editing: false
+        }
+
         this.getAllContacts();
-        //this.selectedContact = this.selectedContact.bind(this)
+        this.submitAvatar = this.submitAvatar.bind(this);
+        this.loadImageBase64 = this.loadImageBase64.bind(this);
     }
-    state = {
-        selected: null,
-        contact:  {
-            firstName: "",
-            last: "",
-            homePhone: "",
-            mobilePhone: "",
-            officePhone: "",
-            address:""
-        },
-        contacts: [],
-        numberOfContacts: 0,
-        editing: false
-    }
+
   emptyContact = {
+        id: null,
         firstName: "",
         lastName: "",
         homePhone: "",
         mobilePhone: "",
         officePhone: "",
-        address:""
+        address:"",
+        avatar: null
     }
 
-  getAllContacts = () => {
-      console.log("get");
-      axios.get("http://localhost:8080/api/contacts").then( res => {
-          console.log(res);
+    getAllContacts = () => {
+        axios.get("http://localhost:8080/api/contacts").then( res => {
+           console.log("allContacts()");
           this.setState({ contacts: res.data, numberOfContacts: res.data.length})
-      });
-  }
+        });
+    }
 
     handleDelete = (e) => {
         e.preventDefault();
@@ -75,18 +83,77 @@ class AddressBook extends Component {
         this.setState({ selected: null, contact: this.emptyContact, editing: false});
     }
 
+    submitAvatar = (id) =>{
+        let data = new FormData();
+        data.append('file', this.state.tmpImagFile, id);
+        console.log(this.state.tmpImagFile);
+        axios.post("http://localhost:8080/api/contacts/contact/" + id + "/avatar", data,{
+            headers: {
+                'Accept': 'application/json',
+                'Accept-Language': 'en-US,en;q=0.8',
+                'Content-Type': 'multipart/form-data',
+                'Access-Control-Allow-Origin': "*"
+            }
+        }).then((response) => {
+            //handle success
+            this.setState({ tmpImagFile: null});
+        }).catch((error) => {
+            //handle error
+        });
+    }
+
     handleSubmit = (e) => {
         e.preventDefault();
         if(!this.state.editing){
           axios.post("http://localhost:8080/api/contacts/contact", this.state.contact)
-              .then(res => this.setState({contact: this.emptyContact, contacts:res.data }));
+              .then(res => {
+                  let list = this.state.contacts;
+                  list.push(res.data);
+                  console.log(res.data);
+                  this.setState({contact: this.emptyContact, contacts:list , numberOfContacts: list.length});
+                  if( this.state.tmpImagFile){
+                      this.submitAvatar(res.data.id);
+                  }
+              });
         }else{
           axios.patch("http://localhost:8080/api/contacts/contact", this.state.contact)
               .then(res => this.setState({contact: this.emptyContact, contacts:res.data, editing: false }));
         }
     }
+
     selectedContact = (val) => {
-        this.setState({selected: val });
+        if(val !== undefined || val !== null ) {
+            this.setState({selected: val});
+            this.loadImageBase64( val.id, (reader) => {
+                this.setState({avatar: reader.result});
+            });
+        }
+    }
+
+    uploadedAvatar = (file) => {
+        console.log(file);
+        this.setState({ tmpImagFile: file});
+    }
+
+    loadImageBase64 = (id, callback) => {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', "http://localhost:8080/api/contacts/contact/"+ id +"/avatar");
+        xhr.responseType = 'blob';
+        xhr.send();
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                // If successful, resolve the promise by passing back the request response
+                var reader = new FileReader();
+                reader.onloadend = function() {
+                    callback(reader.result);
+                }
+                reader.readAsDataURL(xhr.response);
+            } else {
+                // If it fails, reject the promise with a error message
+                console.log('Image didn\'t load successfully; error code:' + xhr.statusText);
+            }
+        };
+
     }
 
   render() {
@@ -103,9 +170,9 @@ class AddressBook extends Component {
 
       let addeditButton;
       if(this.state.editing) {
-          addeditButton =  <button onClick={this.handleReset}>Edit</button>;
+          addeditButton =  <button onClick={this.handleSubmit}>Edit</button>;
       } else {
-          addeditButton =  <button onClick={this.handleReset}>Add</button>;
+          addeditButton =  <button onClick={this.handleSubmit}>Add</button>;
       }
     return (
       <div className="AddressBook">
@@ -113,13 +180,14 @@ class AddressBook extends Component {
           <div>
               <table>
                   <tbody>
-                  <tr class="header">Contacts</tr>
+                  <tr className="header">Contacts</tr>
                   <tr>
                       <td>
                           <form onSubmit={this.handleSubmit} className="editForm" >
+                              <Avatar imageBase64={this.state.avatar} setImageFile={this.uploadedAvatar}></Avatar>
                               <div>First Name <input name={"firstName"} type={"text"} value={this.state.contact.firstName} onChange={this.onChangeForm}
                                                      required className={this.state.inputclass} /></div>
-                              <div>First Name <input name={"lastName"} type={"text"} value={this.state.contact.lastName} onChange={this.onChangeForm}
+                              <div>Last Name <input name={"lastName"} type={"text"} value={this.state.contact.lastName} onChange={this.onChangeForm}
                                                      className={this.state.inputclass} /></div>
                               <div>Phone numbers</div>
                               <div>Home <input name={"homePhone"} type={"text"} value={this.state.contact.homePhone} onChange={this.onChangeForm} className={this.state.inputclass} /></div>
@@ -147,7 +215,7 @@ class AddressBook extends Component {
               </table>
         </div>
             <div>
-                <div className="count"> Cotacts: {this.state.numberOfContacts}</div>
+                <div className="count"> Contacts: {this.state.numberOfContacts}</div>
             </div>
         </div>
       </div>

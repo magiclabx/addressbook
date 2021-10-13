@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from "axios";
-
-
+import Avatar from "./Avatar";
 
 class Contact extends Component {
 
@@ -22,6 +21,7 @@ class Contact extends Component {
         }else{
             return (
                 <div key={co.id} className="contact" >
+                    <Avatar contactId={co.id} imageBase64={this.props.imageBase64} setImageFile={this.uploadedAvatar}></Avatar>
                     <div className="row">First name: {co.firstName}</div>
                     <div className="row">Last name: {co.lastName}</div>
                     <div className="row">Home: {co.homePhone}</div>

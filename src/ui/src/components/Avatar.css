@@ -1,5 +1,13 @@
-avatar {
+.avatar  {
     margin: 0;
     border: brown;
     border-width: 2px;
+}
+
+.avatar img.display {
+    width: 150px;
+    height: 150px;
+    border: 2px solid gray;
+    border-radius: 50%;
+    margin-left: 50px;
 }
