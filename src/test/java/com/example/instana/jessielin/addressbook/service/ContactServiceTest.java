@@ -11,8 +11,9 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.Lists.newArrayList;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 class ContactServiceTest {
 
@@ -30,14 +31,13 @@ class ContactServiceTest {
 
     @BeforeEach
     void setUp() {
-        initMocks(this);
         contactService = new ContactService(contactRepository);
         CONTACT1.setId(CONTACT_ID1);
         CONTACT2.setId(CONTACT_ID2);
     }
 
     @Test
-    void testSearchContact(){
+    void testSearchContact() {
         when(contactRepository.searchByFirstOrLastName("123")).thenReturn(newArrayList(CONTACT1));
         List<Contact> result = contactService.searchContacts("123");
         assertThat(result.size()).isEqualTo(1);
@@ -46,6 +46,7 @@ class ContactServiceTest {
         assertThat(result.size()).isEqualTo(1);
 
     }
+
     @Test
     void testGetAllContacts() {
         when(contactRepository.findAll()).thenReturn(newArrayList(CONTACT1, CONTACT2));
@@ -61,28 +62,22 @@ class ContactServiceTest {
         assertThat(result).isEqualTo(CONTACT1);
     }
 
-    //@Test(expectedExceptions = RuntimeException.class)
-    void testAddExistsContact() {
-        when(contactRepository.save(CONTACT1)).thenThrow(new RuntimeException());
-        contactService.addContact(new Contact("New 1", "XXX"));
-    }
-
     @Test
-    void updateContact() {
+    void testUpdateContact() {
         when(contactRepository.findById(CONTACT1.getId())).thenReturn(Optional.of(CONTACT1));
         when(contactRepository.save(CONTACT1)).thenReturn(CONTACT1);
-        Contact contact= contactService.updateContact(CONTACT1);
+        Contact contact = contactService.updateContact(CONTACT1);
         assertThat(contact).isEqualTo(CONTACT1);
     }
 
-    //@Test(expectedExceptions = ContactNotFoundException.class)
-    void testUpdateNoneExistsContact() {
+    @Test
+    void testUpdateNoneExistsContact_throwsException() {
         when(contactRepository.findById(CONTACT1.getId())).thenReturn(null);
-        Contact contact= contactService.updateContact(CONTACT1);
+        contactService.updateContact(CONTACT1);
     }
 
     @Test
-    void deleteContact() {
+    void testDeleteContact() {
         when(contactRepository.deleteContactById(CONTACT1)).thenReturn(null);
     }
 }

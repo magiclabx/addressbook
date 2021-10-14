@@ -1,5 +1,5 @@
 .AddressBook {
-    margin: 2px;
+    margin: 30px;
 }
 
 .AddressBook-HEAD {
@@ -11,19 +11,14 @@
     text-align: center;
 }
 
-.AddressBook form div#editInput{
-    width: 15px;
-    height: 50px;
-    position: absolute;
-}
-
 .AddressBook .listArea{
     overflow:scroll;
-    height:400px;
+    height:580px;
     width:200px;
     border: 2px solid;
     border-radius: 5px;
-    margin-inline: 3px;
+    margin-inline: 15px;
+    position: relative;
 }
 
 .AddressBook .selectedInfo{
@@ -34,9 +29,14 @@
     width: 220px;
 }
 
-.AddressBook .header{
-    rowlapse: 3;
-    border-bottom: 1px ;
+.header{
+    border-bottom: 4px ;
+    text-align: center;
+    background-color: gray;
+}
+
+.AddressBook .header .hd{
+    border-bottom: 4px ;
     text-align: center;
 }
 
@@ -47,7 +47,7 @@
     position: relative;
 }
 .AddressBook table{
-    height:400px;
+    height:550px;
     border: 1px solid;
     border-radius: 5px;
     margin-inline: 3px;
@@ -65,6 +65,10 @@
 
 .AddressBook .viewArea{
     margin-top: 2px;
-    height: 430px;
+    height: 540px;
     width: 250px;
+}
+
+.item-div:hover {
+    background-color: lightskyblue;
 }

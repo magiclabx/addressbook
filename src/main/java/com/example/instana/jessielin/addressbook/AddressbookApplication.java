@@ -5,10 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.XADataSourceAutoConfiguration;
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class,  XADataSourceAutoConfiguration.class })
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, XADataSourceAutoConfiguration.class})
 public class AddressbookApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(AddressbookApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(AddressbookApplication.class, args);
+    }
 }

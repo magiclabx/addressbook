@@ -16,9 +16,9 @@ public class ContactController {
 
 
     @GetMapping
-    public String getAllContacts(Model model){
+    public Model getAllContacts(Model model) {
         contactService.addContact(new Contact("yy"));
         model.addAttribute("contacts", contactService.getAllContacts());
-        return "contacts.html__";
+        return model;
     }
 }

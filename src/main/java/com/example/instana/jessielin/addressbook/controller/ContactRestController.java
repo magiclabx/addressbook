@@ -17,14 +17,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/contacts")
-@CrossOrigin("*")
 public class ContactRestController {
 
     @Autowired
@@ -33,16 +32,17 @@ public class ContactRestController {
     @Autowired
     private ImageService imageService;
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     SimpleMongoClientDatabaseFactory simpleMongoClientDatabaseFactory;
 
     @GetMapping
-    public ResponseEntity<?> getAllContacts(){
+    public ResponseEntity<?> getAllContacts() {
         return ResponseEntity.ok(contactService.getAllContacts());
     }
 
-    @GetMapping(path = "/s")
-    public ResponseEntity<?>  searchContacts(@RequestBody String name){
+    @GetMapping(path = "/search")
+    public ResponseEntity<?> searchContacts(@RequestBody String name) {
         List<Contact> result = contactService.searchContacts(name);
         return ResponseEntity.ok(result);
     }
@@ -50,17 +50,16 @@ public class ContactRestController {
     @PostMapping(path = "/contact")
     public ResponseEntity<?> addContact(@RequestBody Contact contact) {
         Contact result = contactService.addContact(contact);
-        return ResponseEntity.ok(result);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-    @PatchMapping (path = "/contact/update")
+    @PatchMapping(path = "/contact/update")
     public ResponseEntity<?> editContact(@RequestBody Contact contact) {
         try {
             Contact result = contactService.updateContact(contact);
             return ResponseEntity.ok(result);
-        }catch( ContactNotFoundException cnfe){
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Contact Not Found", cnfe);
+        } catch (ContactNotFoundException cnfe) {
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(contact);
         }
     }
 
@@ -71,32 +70,24 @@ public class ContactRestController {
         return ResponseEntity.ok(result);
     }
 
-    @RequestMapping(method = RequestMethod.POST,
-            produces = "application/json",
-            consumes = "multipart/form-data",
-            path = "/contact/{id}/avatar")
+    @RequestMapping(method = RequestMethod.POST, produces = "application/json", consumes = "multipart/form-data", path = "/contact/{id}/avatar")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ResponseEntity<Object>  handleFileUpload(
-            @PathVariable String id,
-            @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Object> handleImageUpload(@PathVariable String id, @RequestParam("file") MultipartFile file) {
         imageService.saveImage(id, file);
         return ResponseEntity.ok("ok");
     }
 
     @RequestMapping(value = "/contact/{id}/avatar", method = RequestMethod.GET)
-    public ResponseEntity<byte[]>  downloadAvatarImage(@PathVariable String id) throws IOException {
+    public ResponseEntity<byte[]> downloadAvatarImage(@PathVariable String id) throws IOException {
         GridFSFile gridFsFile = imageService.findImageByContactId(id);
-        if (gridFsFile == null)
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        if (gridFsFile == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 
-        GridFsResource gridFsResource = new GridFsResource( gridFsFile,  getGridFs().openDownloadStream(gridFsFile.getObjectId()));
-        byte[] result = new byte[ new Long(gridFsFile.getLength()).intValue() ];
-        IOTools.readFully( gridFsResource.getInputStream(), result);
-        return ResponseEntity.ok()
-                .contentLength(gridFsFile.getLength())
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + gridFsFile.getFilename() + "\"")
-                .body(result);
+        GridFsResource gridFsResource = new GridFsResource(gridFsFile, getGridFs().openDownloadStream(gridFsFile.getObjectId()));
+        byte[] result = new byte[new Long(gridFsFile.getLength()).intValue()];
+        IOTools.readFully(gridFsResource.getInputStream(), result);
+        return ResponseEntity.ok().contentLength(gridFsFile.getLength()).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + gridFsFile.getFilename() + "\"").body(result);
     }
+
     private GridFSBucket getGridFs() {
         MongoDatabase db = simpleMongoClientDatabaseFactory.getMongoDatabase();
         return GridFSBuckets.create(db);

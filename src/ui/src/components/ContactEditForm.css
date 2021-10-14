@@ -1,6 +1,10 @@
-ConctaEditFrom {
-    margin: 0px;
+ContactEdieForm {
     text-decoration-line: none;
-    height: 430px;
+    height: 550px;
     width: 250px;
+}
+
+.ContactEditFrom .moreInfo{
+    width: 200px;
+    height: 80px;
 }

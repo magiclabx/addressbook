@@ -10,16 +10,6 @@ class AddressBook extends Component {
         super(props);
         this.state = {
             selected: null,
-            contact: {
-                id: null,
-                firstName: "",
-                last: "",
-                homePhone: "",
-                mobilePhone: "",
-                officePhone: "",
-                address:"",
-                avatar: null
-            },
             avatar: null,
             contacts: [],
             numberOfContacts: 0,
@@ -31,15 +21,14 @@ class AddressBook extends Component {
         this.loadImageBase64 = this.loadImageBase64.bind(this);
     }
     getAllContacts = () => {
-        axios.get("http://localhost:8080/api/contacts").then( res => {
-           console.log("allContacts()");
+        axios.get("/contacts").then( res => {
           this.setState({ contacts: res.data, numberOfContacts: res.data.length})
         });
     }
 
     handleDelete = (e) => {
         e.preventDefault();
-        axios.delete("http://localhost:8080/api/contacts/" + this.state.selected.id).then( res => {
+        axios.delete("/contacts/" + this.state.selected.id).then( res => {
             let sel = (res.data.length >0) ? res.data.at(res.data.length -1): null;
             this.setState({ selected: sel , contacts: res.data, numberOfContacts: res.data.length})
         });
@@ -52,9 +41,8 @@ class AddressBook extends Component {
     }
 
     selectedContact = (val) => {
-        if(val !== undefined || val !== null ) {
+        if(val ) {
             this.setState({selected: val});
-            console.log(val);
             this.loadImageBase64( val.id, (reader) => {
                 this.setState({avatar: reader.result});
             });
@@ -63,7 +51,7 @@ class AddressBook extends Component {
 
     loadImageBase64 = (id, callback) => {
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', "http://localhost:8080/api/contacts/contact/"+ id +"/avatar");
+        xhr.open('GET', "/contact/"+ id +"/avatar");
         xhr.responseType = 'blob';
         xhr.send();
         xhr.onload = function() {
@@ -101,7 +89,7 @@ class AddressBook extends Component {
 
   render() {
       let contactsList = () => {
-            return this.state.contacts.map((c, index) =>
+            return this.state.contacts.map((c) =>
                 <div><Contact id={c.id} contact={c} setSelected={this.selectedContact} isListItem={true}> </Contact></div>);
       }
       let editContactOrView = () => {
@@ -119,7 +107,7 @@ class AddressBook extends Component {
           <div>
               <table>
                   <tbody>
-                  <tr className="header">Contacts</tr>
+                  <tr className="header"><td colspan="2" className="hd">Contacts</td></tr>
                   <tr>
                       <td>
                           {editContactOrView()}

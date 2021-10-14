@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from "axios";
 import Avatar from "./Avatar";
 
 class Contact extends Component {
@@ -13,7 +12,7 @@ class Contact extends Component {
         if (this.props.isListItem) {
             return (
                 <div key={co.id} className="contact" >
-                    <div className="row" onClick={this.handleSelect} >{co.firstName} {co.lastName}</div>
+                    <div className="item-div" onClick={this.handleSelect} >{co.firstName} {co.lastName}</div>
                 </div>
             );
         }else{
@@ -28,6 +27,9 @@ class Contact extends Component {
                     <div className="row">Mobile: {co.mobilePhone}</div>
                     <div className="row">Company: {co.officePhone}</div>
                     <div className="row">Address: {co.address}</div>
+                    <div className="row">Birthday: {co.birthday}</div>
+                    <div className="row">Homepage: {co.homepage}</div>
+                    <div className="row">Note: {co.note}</div>
                 </div>
             );
         }

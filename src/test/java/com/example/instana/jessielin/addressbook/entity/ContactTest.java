@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ContactTest {
 
     private Contact contact;
+
     @BeforeEach
     void setUp() {
         contact = new Contact("James");

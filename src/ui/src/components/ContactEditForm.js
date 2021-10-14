@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import Avatar from "./Avatar";
 import axios from "axios";
 
-const url = "http://localhost:8080/api/contacts/contact";
+const url = "/contacts/contact";
 
 class ContactEditForm extends Component {
     constructor(props) {
@@ -22,7 +22,10 @@ class ContactEditForm extends Component {
                 homePhone: "",
                 mobilePhone: "",
                 officePhone: "",
-                address:"",
+                address: "",
+                birthday: "",
+                homepage: "",
+                note: "",
                 avatar: null
             }
         }
@@ -43,6 +46,12 @@ class ContactEditForm extends Component {
             co.officePhone = e.target.value;
         }else if (e.target.name === 'address') {
             co.address = e.target.value;
+        }else if (e.target.name === 'birthday') {
+            co.birthday = e.target.value;
+        }else if (e.target.name === 'homepage') {
+            co.homepage = e.target.value;
+        }else if (e.target.name === 'note') {
+            co.note = e.target.value;
         }
         this.setState({contact: co});
     }
@@ -50,14 +59,11 @@ class ContactEditForm extends Component {
     handleComplete = (e) => {
         e.preventDefault();
         this.props.setFinished(this.props.conatctToEdit);
-        //this.setState({selected: null, contact: this.emptyContact, editing: false});
     }
 
     submitAvatar = (id) =>{
         let data = new FormData();
         data.append('file', this.state.tmpImagFile, id);
-        console.log(this.state.tmpImagFile);
-        console.log(id);
         axios.post(url + "/" + id + "/avatar", data,{
             headers: {
                 'Accept': 'application/json',
@@ -69,7 +75,7 @@ class ContactEditForm extends Component {
             //handle success
             this.setState({ tmpImagFile: null});
         }).catch((error) => {
-            //handle error
+            console.log( "Upload image failed. error :" + error)
         });
     }
 
@@ -87,7 +93,6 @@ class ContactEditForm extends Component {
             axios.patch(url + "/update", this.state.contact)
                 .then(res => {
                     if( this.state.tmpImagFile){
-                        console.log("call submit")
                         this.submitAvatar(this.state.contact.id);
                     }
                     this.props.setFinished(res.data);
@@ -97,7 +102,6 @@ class ContactEditForm extends Component {
     }
 
     uploadedAvatar = (file) => {
-        console.log(file);
         this.setState({ tmpImagFile: file});
     }
 
@@ -114,26 +118,38 @@ class ContactEditForm extends Component {
             <div className="ContactEditForm">
                 <form onSubmit={this.handleSubmit} className="editForm">
                     <Avatar contactId={this.state.contact.id} setImageFile={this.uploadedAvatar}></Avatar>
-                    <div>First Name: <input name={"firstName"} type={"text"} value={this.state.contact.firstName}
-                                            onChange={this.onChangeForm}
-                                            required /></div>
-                    <div>Last Name: <input name={"lastName"} type={"text"} value={this.state.contact.lastName}
-                                           onChange={this.onChangeForm}/></div>
-                    <div>---Phone numbers---</div>
-                    <div>Home: <input name={"homePhone"} type={"text"} value={this.state.contact.homePhone}
-                                      onChange={this.onChangeForm} /></div>
-                    <div>Mobile: <input name={"mobilePhone"} type={"text"} value={this.state.contact.mobilePhone}
-                                        onChange={this.onChangeForm} /></div>
-                    <div>Company: <input name={"officePhone"} type={"text"} value={this.state.contact.officePhone}
-                                        onChange={this.onChangeForm} />
-                    </div>
-                    <div>Address: </div>
-                    <div><textarea name={"address"} type={"text"} value={this.state.contact.address}
-                                   onChange={this.onChangeForm} /></div>
-                    <div>
-                        <button onClick={this.handleComplete}>Cancel</button>
-                        {addeditButton}
-                    </div>
+                        <div>First Name: <input name={"firstName"} type={"text"} value={this.state.contact.firstName}
+                                                onChange={this.onChangeForm}
+                                                required /></div>
+                        <div>Last Name: <input name={"lastName"} type={"text"} value={this.state.contact.lastName}
+                                               onChange={this.onChangeForm}/></div>
+                        <div>---Phone numbers---</div>
+                        <div>Home: <input name={"homePhone"} type={"text"} value={this.state.contact.homePhone}
+                                          onChange={this.onChangeForm} /></div>
+                        <div>Mobile: <input name={"mobilePhone"} type={"text"} value={this.state.contact.mobilePhone}
+                                            onChange={this.onChangeForm} /></div>
+                        <div>Company: <input name={"officePhone"} type={"text"} value={this.state.contact.officePhone}
+                                            onChange={this.onChangeForm} />
+                        </div>
+                        <div>Address: </div>
+                        <div>
+                            <textarea className="moreInfo"  name={"address"} type="text" value={this.state.contact.address}
+                                       onChange={this.onChangeForm} />
+                        </div>
+                        <div>
+                            <div>Birthday: <input name={"birthday"} type={"text"} value={this.state.contact.birthday}
+                                                onChange={this.onChangeForm} /></div>
+                            <div>Homepage: <input name={"homepage"} type={"text"} value={this.state.contact.homepage}
+                                                 onChange={this.onChangeForm} />
+                            </div>
+                            <div>Note: </div>
+                            <div>
+                                <textarea className="moreInfo"  name={"note"} type="text" value={this.state.contact.note}
+                                      onChange={this.onChangeForm} />
+                            </div>
+                            <button onClick={this.handleComplete}>Cancel</button>
+                            {addeditButton}
+                        </div>
                 </form>
             </div>
         )

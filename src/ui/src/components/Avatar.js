@@ -14,7 +14,7 @@ class Avatar extends Component {
 
     loadImageBase64 = (id, callback) => {
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', "http://localhost:8080/api/contacts/contact/"+ id +"/avatar");
+        xhr.open('GET', "/contacts/contact/"+ id +"/avatar");
         xhr.responseType = 'blob';
         xhr.send();
         xhr.onload = function() {
@@ -34,7 +34,6 @@ class Avatar extends Component {
     downloadAvatar = () => {
         if (this.props.contactId ) {
             this.loadImageBase64(this.props.contactId, (reader) => {
-                console.log(reader);
                 this.setState({image: reader});
             });
         }

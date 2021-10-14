@@ -1,14 +1,17 @@
-contact{
+.contact{
     margin: 0px;
     text-decoration-line: none;
-    width:200px
+    width:200px;
+    margin-left: 3px;
 }
 
-.row {
+
+div#row {
     width: 112px;
     height: 47px;
     border-bottom: 1px solid black;
     position: absolute;
+    margin: 5px;
 }
 
 li:nth-child(odd) {
@@ -19,8 +22,31 @@ li:nth-child(odd) {
     position: absolute;
 }
 
-contact.imageArea{
+contact .imageArea{
     margin-top: 2px;
     margin-bottom: 50px;
 }
 
+.item-div  {
+    position: relative;
+    z-index: 9;
+    background: green;
+    width:500px;
+    height:100px;
+}
+
+.item-dov:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+
+    bottom: 0;
+    left: 0;
+    background: red;
+}
+
+div.row{
+    margin: 5px;
+    padding: 3px;
+}

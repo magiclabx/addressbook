@@ -20,17 +20,18 @@ public class ContactService {
     }
 
     private static List<Contact> contacts = new ArrayList<>();
+
     static {
-        for (int i=0; i<5; i++) {
+        for (int i = 0; i < 5; i++) {
             contacts.add(new Contact("User " + i, "XXX"));
         }
     }
 
-    public List<Contact> getAllContacts(){
+    public List<Contact> getAllContacts() {
         return contactRepository.findAllSortByName();
     }
 
-    public List<Contact> searchContacts(String name){
+    public List<Contact> searchContacts(String name) {
         List<Contact> list = contactRepository.searchByFirstOrLastName(name);
         return list;
     }
