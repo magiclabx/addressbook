@@ -27,7 +27,11 @@ you can trigger npm in IDE or start npm server manually under src/ui folder, by 
 ```
 
 ### Batabase
-You will need to create a datatbase name called 'contactsdb' under MongoDB. It required a collection named 'contact'. 
+You will need to create a datatbase name called 'contactsdb' under MongoDB. It required a collection named 'contact'. Otherwise you can use run following command to create a docker container.
+
+```
+docker-compose -f docker-compose.yml up
+```
 
 ## Contribution
 Jessie Lin
