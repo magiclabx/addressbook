@@ -34,7 +34,7 @@ docker-compose -f docker-compose.yml up
 ```
 
 ## Contribution
-Jessie Lin
+Jessie
 
 
 
