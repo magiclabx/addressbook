@@ -1,12 +1,12 @@
-.contact{
-    margin: 0px;
+.Contact{
+    margin: 0;
     text-decoration-line: none;
     width:200px;
     margin-left: 3px;
 }
 
 
-div#row {
+.Contact div#row {
     width: 112px;
     height: 47px;
     border-bottom: 1px solid black;
@@ -14,7 +14,7 @@ div#row {
     margin: 5px;
 }
 
-li:nth-child(odd) {
+.Contact li:nth-child(odd) {
     color: gray;
     width: 112px;
     height: 47px;
@@ -22,12 +22,12 @@ li:nth-child(odd) {
     position: absolute;
 }
 
-contact .imageArea{
+.Contact .imageArea{
     margin-top: 2px;
     margin-bottom: 50px;
 }
 
-.item-div  {
+.Contact .item-div  {
     position: relative;
     z-index: 9;
     background: green;
@@ -35,7 +35,7 @@ contact .imageArea{
     height:100px;
 }
 
-.item-dov:before {
+.Contact .item-dov:before {
     content: "";
     position: absolute;
     z-index: -1;
@@ -46,7 +46,13 @@ contact .imageArea{
     background: red;
 }
 
-div.row{
+.Contact div.row{
     margin: 5px;
     padding: 3px;
+}
+
+.Contact button{
+    font-size: medium;
+    border-radius: 5%;
+    margin: 2px 5px 0 2px;
 }

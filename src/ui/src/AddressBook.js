@@ -95,7 +95,7 @@ class AddressBook extends Component {
       let editContactOrView = () => {
           return (this.state.selected == null ) ?
               <ContactEditForm conatctToEdit={this.state.editingAt} appenedNewContact={this.handleAddContact} avatar={this.state.avatar} setFinished={this.setViewing}></ContactEditForm>
-          : <div className="viewArea">
+          : <div className="view-area">
                   <Contact contact={this.state.selected} ></Contact>
                   <button onClick={this.handleAdd}>Add</button>
                   <button onClick={this.handleEdit}>Edit</button>
@@ -107,13 +107,13 @@ class AddressBook extends Component {
           <div>
               <table>
                   <tbody>
-                  <tr className="header"><td colspan="2" className="hd">Contacts</td></tr>
+                  <tr className="header"><th colspan="2" className="hd">Contacts</th></tr>
                   <tr>
                       <td>
                           {editContactOrView()}
                        </td>
                       <td>
-                          <div className="listArea">
+                          <div className="list-area">
                             {contactsList()}
                           </div>
                       </td>

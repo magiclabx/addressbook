@@ -10,7 +10,8 @@ class ContactEditForm extends Component {
         this.state = {
             //selected: null,
             contact: null,
-            isEditing : false
+            isEditing : false,
+            error : null
         }
         if (props.conatctToEdit !=null){
             this.state.contact = props.conatctToEdit;
@@ -30,6 +31,39 @@ class ContactEditForm extends Component {
             }
         }
         this.submitAvatar = this.submitAvatar.bind(this);
+    }
+
+    handleValidation() {
+        //Name
+        if (this.state.contact.firstName =="") {
+            this.setState( {error :"First name is required."});
+            return false;
+        }
+
+        if ( (this.state.contact.homePhone !== ""&& !this.state.contact.homePhone.match(/^[0-9 -]+$/) ) ||
+            (this.state.contact.mobilePhone !== ""&& !this.state.contact.mobilePhone.match(/^[0-9 -]+$/) )||
+            (this.state.contact.officePhone !== ""&& !this.state.contact.officePhone.match(/^[0-9 -]+$/) )){
+                this.setState( {error :"Telephone numbers are only 0-9 - and space."});
+                return false;
+        }
+
+        //birthday
+        if (this.state.contact.birthday && this.state.contact.birthday !== "" ) {
+            if (!this.state.contact.birthday.match(/[0-9]{2}[-|\/]{1}[0-9]{2}[-|\/]{1}[0-9]{4}/)) {
+                this.setState( {error :"Birthday can only correct date format.(DD-MM-YYYY)"});
+                return false;
+            }
+        }
+
+        if (this.state.contact.homepage && this.state.contact.homepage !== "" ) {
+            if (!this.state.contact.homepage.match(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi)
+            ) {
+                this.setState( {error :"Homepage can only correct web url format."});
+                return false;
+            }
+        }
+        this.setState({ error : null});
+        return true;
     }
 
     onChangeForm = (e) => {
@@ -53,7 +87,7 @@ class ContactEditForm extends Component {
         }else if (e.target.name === 'note') {
             co.note = e.target.value;
         }
-        this.setState({contact: co});
+        this.setState({contact: co, error: null});
     }
 
     handleComplete = (e) => {
@@ -80,6 +114,11 @@ class ContactEditForm extends Component {
     }
 
     handleSubmit = (e) => {
+        e.preventDefault();
+        if (!this.handleValidation()){
+            return ;
+        }
+
         e.preventDefault();
         if(!this.props.conatctToEdit){
             axios.post( url, this.state.contact)
@@ -113,44 +152,53 @@ class ContactEditForm extends Component {
         } else {
             addeditButton =  <button onClick={this.handleSubmit}>Add</button>;
         }
-
+        let errorstatus;
+        if(this.state.error!=null){
+            errorstatus = <label className="error">Format error: {this.state.error} </label>;
+        }
         return (
             <div className="ContactEditForm">
-                <form onSubmit={this.handleSubmit} className="editForm">
-                    <Avatar contactId={this.state.contact.id} setImageFile={this.uploadedAvatar}></Avatar>
-                        <div>First Name: <input name={"firstName"} type={"text"} value={this.state.contact.firstName}
-                                                onChange={this.onChangeForm}
-                                                required /></div>
-                        <div>Last Name: <input name={"lastName"} type={"text"} value={this.state.contact.lastName}
-                                               onChange={this.onChangeForm}/></div>
-                        <div>---Phone numbers---</div>
-                        <div>Home: <input name={"homePhone"} type={"text"} value={this.state.contact.homePhone}
-                                          onChange={this.onChangeForm} /></div>
-                        <div>Mobile: <input name={"mobilePhone"} type={"text"} value={this.state.contact.mobilePhone}
-                                            onChange={this.onChangeForm} /></div>
-                        <div>Company: <input name={"officePhone"} type={"text"} value={this.state.contact.officePhone}
-                                            onChange={this.onChangeForm} />
-                        </div>
-                        <div>Address: </div>
-                        <div>
-                            <textarea className="moreInfo"  name={"address"} type="text" value={this.state.contact.address}
-                                       onChange={this.onChangeForm} />
-                        </div>
-                        <div>
-                            <div>Birthday: <input name={"birthday"} type={"text"} value={this.state.contact.birthday}
+                <div className="edit-form">
+                    <form onSubmit={this.handleSubmit} className="edit-form">
+                        <Avatar contactId={this.state.contact.id} setImageFile={this.uploadedAvatar}></Avatar>
+                            <div>First Name: <input name={"firstName"} type={"text"} value={this.state.contact.firstName}
+                                                    onChange={this.onChangeForm} placeholder="First name*"
+                                                    required /></div>
+                            <div>Last Name: <input name={"lastName"} type={"text"} value={this.state.contact.lastName}
+                                                   onChange={this.onChangeForm} placeholder="Last name"/></div>
+                            <div>---Phone numbers---</div>
+                            <div>Home: <input name={"homePhone"} type={"text"} value={this.state.contact.homePhone}
+                                              onChange={this.onChangeForm}/></div>
+                            <div>Mobile: <input name={"mobilePhone"} type={"text"} value={this.state.contact.mobilePhone}
                                                 onChange={this.onChangeForm} /></div>
-                            <div>Homepage: <input name={"homepage"} type={"text"} value={this.state.contact.homepage}
-                                                 onChange={this.onChangeForm} />
+                            <div>Company: <input name={"officePhone"} type={"text"} value={this.state.contact.officePhone}
+                                                onChange={this.onChangeForm} />
                             </div>
-                            <div>Note: </div>
+                            <div className="line"></div>
+                            <div>Address: </div>
                             <div>
-                                <textarea className="moreInfo"  name={"note"} type="text" value={this.state.contact.note}
-                                      onChange={this.onChangeForm} />
+                                <textarea className="moreInfo"  name={"address"} type="text" value={this.state.contact.address}
+                                           onChange={this.onChangeForm} />
                             </div>
-                            <button onClick={this.handleComplete}>Cancel</button>
-                            {addeditButton}
-                        </div>
-                </form>
+                            <div>
+                                <div>Birthday: <input name={"birthday"} type={"text"} value={this.state.contact.birthday}
+                                                    onChange={this.onChangeForm} placeholder="DD-MM-YYY"/></div>
+                                <div>Homepage: <input name={"homepage"} type={"text"} value={this.state.contact.homepage}
+                                                     onChange={this.onChangeForm} placeholder="http://"/>
+                                </div>
+                                <div>Note: </div>
+                                <div>
+                                        <textarea className="moreInfo"  name={"note"} type="text" value={this.state.contact.note}
+                                          onChange={this.onChangeForm} />
+                                </div>
+                                <button onClick={this.handleComplete}>Cancel</button>
+                                {addeditButton}
+                                <div>
+                                    {errorstatus}
+                                </div>
+                            </div>
+                    </form>
+                </div>
             </div>
         )
 

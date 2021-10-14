@@ -1,10 +1,13 @@
-ContactEdieForm {
+.ContactEdieForm {
     text-decoration-line: none;
     height: 550px;
-    width: 250px;
+    width: 400px;
 }
 
-.ContactEditFrom .moreInfo{
-    width: 200px;
-    height: 80px;
+.ContactEdieForm input{
+    WIDTH: 60%;
+    padding: 3px;
 }
+
+
+
