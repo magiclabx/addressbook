@@ -1,7 +1,6 @@
 package com.example.instana.jessielin.addressbook.repository;
 
 import com.example.instana.jessielin.addressbook.entity.Contact;
-import com.mongodb.client.result.DeleteResult;
 
 import java.util.List;
 

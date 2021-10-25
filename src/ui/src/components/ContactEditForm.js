@@ -182,9 +182,9 @@ class ContactEditForm extends Component {
                             </div>
                             <div>
                                 <div>Birthday: <input name={"birthday"} type={"text"} value={this.state.contact.birthday}
-                                                    onChange={this.onChangeForm} placeholder="DD-MM-YYY"/></div>
+                                                    onChange={this.onChangeForm} placeholder="DD-MM-YYYY" className="date-input"/></div>
                                 <div>Homepage: <input name={"homepage"} type={"text"} value={this.state.contact.homepage}
-                                                     onChange={this.onChangeForm} placeholder="http://"/>
+                                                     onChange={this.onChangeForm} placeholder="http://" />
                                 </div>
                                 <div>Note: </div>
                                 <div>

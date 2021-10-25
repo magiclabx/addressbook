@@ -1,6 +1,5 @@
 package com.example.instana.jessielin.addressbook;
 
-import com.mongodb.ClientSessionOptions;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;

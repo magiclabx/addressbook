@@ -123,3 +123,7 @@ div.line{
     font-size: small;
     height: 16px;
 }
+
+.edit-form .date-input{
+    width: 30%;
+}

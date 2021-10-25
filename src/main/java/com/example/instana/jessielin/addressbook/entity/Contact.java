@@ -1,9 +1,7 @@
 package com.example.instana.jessielin.addressbook.entity;
 
 import com.sun.istack.NotNull;
-import com.sun.xml.bind.v2.model.core.ID;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.yaml.snakeyaml.events.Event;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -13,7 +11,7 @@ import java.util.Date;
 public class Contact {
 
     @Transient
-    private static final String SEQUENCE_NAME = "user_sequence";
+    private static final String SEQUENCE_NAME = "contact_sequence";
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
