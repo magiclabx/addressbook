@@ -11,8 +11,8 @@
 	<groupId>com.example.instana.jessielin</groupId>
 	<artifactId>addressbook</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>addressbook</name>
-	<description>Project for applying fullstack egineer position</description>
+	<name>address-book</name>
+	<description>Project for applying fullstack engineer position</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -20,10 +20,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -51,10 +47,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-hateoas</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
