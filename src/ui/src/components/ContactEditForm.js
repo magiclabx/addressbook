@@ -146,7 +146,7 @@ class ContactEditForm extends Component {
         this.setState({ tmpImagFile: file});
     }
 
-    getParsedDate = (strDate) =>{
+    getParsedDate = (strDate) => {
         if(strDate == null) return "";
         let strSplitDate = String(strDate).split(' ');
         let date = new Date(strSplitDate[0]);

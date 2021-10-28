@@ -13,8 +13,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.Lists.newArrayList;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @Ignore
@@ -35,7 +33,7 @@ class ContactServiceTest {
 
     @BeforeEach
     void setUp() {
-        //contactService = new ContactService(contactRepository);
+        contactService = new ContactService(contactRepository);
         CONTACT1.setId(CONTACT_ID1);
         CONTACT2.setId(CONTACT_ID2);
     }
