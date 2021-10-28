@@ -1,6 +1,6 @@
-package com.example.instana.jessielin.addressbook.repository;
+package com.magiclabx.assignment.addressbook.repository;
 
-import com.example.instana.jessielin.addressbook.entity.Contact;
+import com.magiclabx.assignment.addressbook.entity.Contact;
 
 import java.util.List;
 

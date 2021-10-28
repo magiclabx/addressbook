@@ -1,4 +1,4 @@
-package com.example.instana.jessielin.addressbook.service;
+package com.magiclabx.assignment.addressbook.service;
 
 import com.mongodb.client.gridfs.model.GridFSFile;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import java.io.IOException;
 
 @Service
 public class ImageService {
+
     @Autowired
     GridFsTemplate gridFsTemplate;
 
@@ -19,21 +20,21 @@ public class ImageService {
         this.gridFsTemplate = gridFsTemplate;
     }
 
-    public void saveImage(String id, MultipartFile file) {
+    public void saveAvatar(String id, MultipartFile file) {
         try {
             //remove image with same file name
-            deleteImageByContactId(id);
+            deleteAvatarByContactId(id);
             gridFsTemplate.store(file.getInputStream(), id, "image/jpg");
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
 
-    public GridFSFile findImageByContactId(String id) {
+    public GridFSFile findAvatarByContactId(String id) {
         return gridFsTemplate.findOne(new Query(Criteria.where("filename").is(id)));
     }
 
-    public void deleteImageByContactId(String id) {
+    public void deleteAvatarByContactId(String id) {
         gridFsTemplate.delete(new Query(Criteria.where("filename").is(id)));
     }
 }

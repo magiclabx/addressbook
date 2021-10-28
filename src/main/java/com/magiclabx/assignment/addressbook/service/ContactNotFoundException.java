@@ -1,4 +1,4 @@
-package com.example.instana.jessielin.addressbook.service;
+package com.magiclabx.assignment.addressbook.service;
 
 public class ContactNotFoundException extends RuntimeException {
     private static final long serialVersionUID = 1L;

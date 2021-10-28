@@ -1,9 +1,9 @@
-package com.example.instana.jessielin.addressbook.controller;
+package com.magiclabx.assignment.addressbook.controller;
 
-import com.example.instana.jessielin.addressbook.entity.Contact;
-import com.example.instana.jessielin.addressbook.service.ContactNotFoundException;
-import com.example.instana.jessielin.addressbook.service.ContactService;
-import com.example.instana.jessielin.addressbook.service.ImageService;
+import com.magiclabx.assignment.addressbook.entity.Contact;
+import com.magiclabx.assignment.addressbook.service.ContactNotFoundException;
+import com.magiclabx.assignment.addressbook.service.ContactService;
+import com.magiclabx.assignment.addressbook.service.ImageService;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSBuckets;
@@ -66,20 +66,20 @@ public class ContactRestController {
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> deleteContact(@PathVariable Contact id) {
         List<Contact> result = contactService.deleteContact(id);
-        imageService.deleteImageByContactId(id.getId());
+        imageService.deleteAvatarByContactId(id.getId());
         return ResponseEntity.ok(result);
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/json", consumes = "multipart/form-data", path = "/contact/{id}/avatar")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ResponseEntity<Object> handleImageUpload(@PathVariable String id, @RequestParam("file") MultipartFile file) {
-        imageService.saveImage(id, file);
+    public ResponseEntity<Object> handleAvatarUpload(@PathVariable String id, @RequestParam("file") MultipartFile file) {
+        imageService.saveAvatar(id, file);
         return ResponseEntity.ok("ok");
     }
 
     @RequestMapping(value = "/contact/{id}/avatar", method = RequestMethod.GET)
     public ResponseEntity<byte[]> downloadAvatarImage(@PathVariable String id) throws IOException {
-        GridFSFile gridFsFile = imageService.findImageByContactId(id);
+        GridFSFile gridFsFile = imageService.findAvatarByContactId(id);
         if (gridFsFile == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 
         GridFsResource gridFsResource = new GridFsResource(gridFsFile, getGridFs().openDownloadStream(gridFsFile.getObjectId()));

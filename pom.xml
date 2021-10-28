@@ -8,10 +8,10 @@
 		<version>2.5.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example.instana.jessielin</groupId>
+	<groupId>com.magiclabx.assignment</groupId>
 	<artifactId>addressbook</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>address-book</name>
+	<name>addressbook</name>
 	<description>Project for applying fullstack engineer position</description>
 	<properties>
 		<java.version>11</java.version>

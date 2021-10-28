@@ -1,4 +1,4 @@
-package com.example.instana.jessielin.addressbook.service;
+package com.magiclabx.assignment.addressbook.service;
 
 import com.mongodb.client.gridfs.model.GridFSFile;
 import org.bson.types.ObjectId;
@@ -43,7 +43,7 @@ class ImageServiceTest {
         Mockito.doNothing().when(gridFsTemplate).delete(QUERY);
 
         try {
-            imageService.saveImage(CONTACT_ID1, file);
+            imageService.saveAvatar(CONTACT_ID1, file);
         } catch (Exception e) {
 
         }
@@ -55,12 +55,12 @@ class ImageServiceTest {
         GridFSFile gridFSFile = mock(GridFSFile.class);
         when(gridFsTemplate.findOne(query)).thenReturn(gridFSFile);
 
-        assertThat(imageService.findImageByContactId(CONTACT_ID1)).isEqualTo(gridFSFile);
+        assertThat(imageService.findAvatarByContactId(CONTACT_ID1)).isEqualTo(gridFSFile);
     }
 
     @Test
     void testDeleteImageByContactId() {
         Mockito.doNothing().when(gridFsTemplate).delete(QUERY);
-        imageService.deleteImageByContactId(CONTACT_ID1);
+        imageService.deleteAvatarByContactId(CONTACT_ID1);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.instana.jessielin.addressbook.entity;
+package com.magiclabx.assignment.addressbook.entity;
 
 import com.sun.istack.NotNull;
 import org.springframework.data.mongodb.core.mapping.Field;

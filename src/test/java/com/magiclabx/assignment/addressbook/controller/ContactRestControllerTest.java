@@ -1,9 +1,9 @@
-package com.example.instana.jessielin.addressbook.controller;
+package com.magiclabx.assignment.addressbook.controller;
 
-import com.example.instana.jessielin.addressbook.entity.Contact;
-import com.example.instana.jessielin.addressbook.repository.ContactRepository;
-import com.example.instana.jessielin.addressbook.service.ContactService;
-import com.example.instana.jessielin.addressbook.service.ImageService;
+import com.magiclabx.assignment.addressbook.entity.Contact;
+import com.magiclabx.assignment.addressbook.repository.ContactRepository;
+import com.magiclabx.assignment.addressbook.service.ContactService;
+import com.magiclabx.assignment.addressbook.service.ImageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -20,7 +20,6 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @WebAppConfiguration

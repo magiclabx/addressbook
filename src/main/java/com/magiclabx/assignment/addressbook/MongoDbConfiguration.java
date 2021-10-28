@@ -1,4 +1,4 @@
-package com.example.instana.jessielin.addressbook;
+package com.magiclabx.assignment.addressbook;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
@@ -18,7 +18,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 @Configuration
-@EnableMongoRepositories(basePackages = "com.example.instana.jessielin.addressbook.repository")
+@EnableMongoRepositories(basePackages = "com.magiclabx.assignment.addressbook.repository")
 public class MongoDbConfiguration extends AbstractMongoClientConfiguration {
 
     @Value("${spring.data.mongodb.database}")

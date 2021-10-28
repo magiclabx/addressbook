@@ -7,6 +7,24 @@ class Contact extends Component {
         e.preventDefault();
         this.props.setSelected(this.props.contact);
     }
+
+    getParsedDate(strDate){
+        if(strDate == null) return "";
+        let strSplitDate = String(strDate).split(' ');
+        let date = new Date(strSplitDate[0]);
+        let dd = date.getDate();
+        let mm = date.getMonth() + 1; //January is 0!
+
+        let yyyy = date.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        date = yyyy + "-" + mm + "-" + dd;
+        return date.toString();
+    }
     render (){
         const co = this.props.contact;
         if (this.props.isListItem) {
@@ -27,7 +45,7 @@ class Contact extends Component {
                     <div className="row">Mobile: {co.mobilePhone}</div>
                     <div className="row">Company: {co.officePhone}</div>
                     <div className="row">Address: {co.address}</div>
-                    <div className="row">Birthday: {co.birthday}</div>
+                    <div className="row">Birthday: {this.getParsedDate(co.birthday).toString()}</div>
                     <div className="row">Homepage: {co.homepage}</div>
                     <div className="row">Note: {co.note}</div>
                 </div>

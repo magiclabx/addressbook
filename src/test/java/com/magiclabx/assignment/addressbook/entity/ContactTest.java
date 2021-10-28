@@ -1,4 +1,4 @@
-package com.example.instana.jessielin.addressbook.entity;
+package com.magiclabx.assignment.addressbook.entity;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

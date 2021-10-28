@@ -1,8 +1,9 @@
-package com.example.instana.jessielin.addressbook.service;
+package com.magiclabx.assignment.addressbook.service;
 
-import com.example.instana.jessielin.addressbook.entity.Contact;
-import com.example.instana.jessielin.addressbook.repository.ContactRepository;
+import com.magiclabx.assignment.addressbook.entity.Contact;
+import com.magiclabx.assignment.addressbook.repository.ContactRepository;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,18 +14,11 @@ import java.util.Optional;
 @Service
 public class ContactService {
 
+    @Autowired
     private ContactRepository contactRepository;
 
     public ContactService(ContactRepository contactRepository) {
         this.contactRepository = contactRepository;
-    }
-
-    private static List<Contact> contacts = new ArrayList<>();
-
-    static {
-        for (int i = 0; i < 5; i++) {
-            contacts.add(new Contact("User " + i, "XXX"));
-        }
     }
 
     public List<Contact> getAllContacts() {

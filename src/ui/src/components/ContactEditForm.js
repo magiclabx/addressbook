@@ -15,6 +15,8 @@ class ContactEditForm extends Component {
         }
         if (props.conatctToEdit !=null){
             this.state.contact = props.conatctToEdit;
+            this.state.contact.birthday = this.getParsedDate(this.state.contact.birthday)
+
         }else{
             this.state.contact = {
                 id: null,
@@ -49,8 +51,8 @@ class ContactEditForm extends Component {
 
         //birthday
         if (this.state.contact.birthday && this.state.contact.birthday !== "" ) {
-            if (!this.state.contact.birthday.match(/[0-9]{2}[-|\/]{1}[0-9]{2}[-|\/]{1}[0-9]{4}/)) {
-                this.setState( {error :"Birthday can only correct date format.(DD-MM-YYYY)"});
+            if (!this.state.contact.birthday.match(/[0-9]{4}[-|\/]{1}[0-9]{2}[-|\/]{1}[0-9]{2}/)) {
+                this.setState( {error :"Birthday can only correct date format.(YYYY-MM-DD)"});
                 return false;
             }
         }
@@ -144,6 +146,24 @@ class ContactEditForm extends Component {
         this.setState({ tmpImagFile: file});
     }
 
+    getParsedDate = (strDate) =>{
+        if(strDate == null) return "";
+        let strSplitDate = String(strDate).split(' ');
+        let date = new Date(strSplitDate[0]);
+        let dd = date.getDate();
+        let mm = date.getMonth() + 1; //January is 0!
+
+        let yyyy = date.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        date = yyyy + "-" + mm + "-" + dd;
+        return date.toString();
+    }
+
     render() {
 
         let addeditButton;
@@ -156,6 +176,8 @@ class ContactEditForm extends Component {
         if(this.state.error!=null){
             errorstatus = <label className="error">Format error: {this.state.error} </label>;
         }
+
+
         return (
             <div className="ContactEditForm">
                 <div className="edit-form">
@@ -181,8 +203,8 @@ class ContactEditForm extends Component {
                                            onChange={this.onChangeForm} />
                             </div>
                             <div>
-                                <div>Birthday: <input name={"birthday"} type={"text"} value={this.state.contact.birthday}
-                                                    onChange={this.onChangeForm} placeholder="DD-MM-YYYY" className="date-input"/></div>
+                                <div>Birthday: <input name={"birthday"} type={"text"} value={ this.state.contact.birthday}
+                                                    onChange={this.onChangeForm} placeholder="YYYY-MM-DD" className="date-input"/></div>
                                 <div>Homepage: <input name={"homepage"} type={"text"} value={this.state.contact.homepage}
                                                      onChange={this.onChangeForm} placeholder="http://" />
                                 </div>

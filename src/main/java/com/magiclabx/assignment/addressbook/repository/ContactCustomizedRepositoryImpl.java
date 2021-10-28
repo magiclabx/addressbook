@@ -1,6 +1,6 @@
-package com.example.instana.jessielin.addressbook.repository;
+package com.magiclabx.assignment.addressbook.repository;
 
-import com.example.instana.jessielin.addressbook.entity.Contact;
+import com.magiclabx.assignment.addressbook.entity.Contact;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
